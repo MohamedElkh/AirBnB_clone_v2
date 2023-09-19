@@ -5,7 +5,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 
-var_st = getenv('HBNB_TYPE_STORAGE')
+var_st = getenv("HBNB_TYPE_STORAGE")
 
 
 class User(BaseModel, Base):
@@ -14,12 +14,14 @@ class User(BaseModel, Base):
     if var_st == 'db':
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
+
         first_name = Column(String(128), nullable=True)
         last_name = Column(String(128), nullable=True)
+
         places = relationship('Place', backref='user')
         reviews = relationship('Review', backref='user')
     else:
-        email = ''
-        password = ''
-        first_name = ''
-        last_name = ''
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
