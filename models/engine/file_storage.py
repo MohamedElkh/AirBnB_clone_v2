@@ -8,9 +8,33 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    @property
+    def cities(self):
+        """Retruns Cities in state"""
+
+    def delete(self, obj=None):
+        """loop through __objects, compare each value
+        of key with cls argument wich is object
+        """
+        if obj:
+            id = obj.to_dict()["id"]
+            clsname = obj.to_dict()["__class__"]
+            kName = clsname+"."+id
+            if kName in FileStorage.__objects:
+                del (FileStorage.__objects[kName])
+                self.save()
+
+    def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        return FileStorage.__objects
+        dict_p = {}
+        if cls:
+            clsname = cls.__name__
+            for ky, v in FileStorage.__objects.items():
+                if ky.split('.')[0] == clsname:
+                    dict_p[ky] = str(v)
+            return dict_p
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -45,6 +69,6 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
