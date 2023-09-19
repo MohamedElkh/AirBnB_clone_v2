@@ -3,15 +3,15 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-import os
+from os import getenv
 
-var_value = os.environ.get('HBNB_TYPE_STORAGE')
+var_st = getenv('HBNB_TYPE_STORAGE')
 
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
-    if var_value == 'db':
+    if var_st == 'db':
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
         first_name = Column(String(128), nullable=True)

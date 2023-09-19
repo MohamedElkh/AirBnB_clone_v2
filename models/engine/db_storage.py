@@ -4,7 +4,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import IntegrityError, OperationalError
-import os
+from os import getenv
 from models.amenity import Amenity
 from models.user import User
 from models.place import Place
@@ -18,15 +18,14 @@ class DBStorage:
     """An implementation of the Database Storage"""
     __engine = None
     __session = None
-    Session = None
 
     def __init__(self):
         """the class constructor for the database storage implementation"""
-        user = os.environ.get('HBNB_MYSQL_USER')
-        pwd = os.environ.get('HBNB_MYSQL_PWD')
-        host = os.environ.get('HBNB_MYSQL_HOST')
-        database = os.environ.get('HBNB_MYSQL_DB')
-        env = os.environ.get('HBNB_ENV')
+        user = getenv('HBNB_MYSQL_USER')
+        pwd = getenv('HBNB_MYSQL_PWD')
+        host = getenv('HBNB_MYSQL_HOST')
+        database = getenv('HBNB_MYSQL_DB')
+        env = getenv('HBNB_ENV')
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
                 .format(user, pwd, host, database), pool_pre_ping=True)
