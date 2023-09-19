@@ -5,12 +5,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import IntegrityError, OperationalError
 from os import getenv
+import os
 
-user = getenv('HBNB_MYSQL_USER')
-pwd = getenv('HBNB_MYSQL_PWD')
-host = getenv('HBNB_MYSQL_HOST')
-database = getenv('HBNB_MYSQL_DB')
-env = getenv('HBNB_ENV')
+user = os.environ.get('HBNB_MYSQL_USER')
+pwd = os.environ.get('HBNB_MYSQL_PWD')
+host = os.environ.get('HBNB_MYSQL_HOST')
+database = os.environ.get('HBNB_MYSQL_DB')
+env = os.environ.get('HBNB_ENV')
 
 
 class DBStorage:
