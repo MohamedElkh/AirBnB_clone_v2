@@ -126,15 +126,19 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[narg[0]]()
         if len(narg) >= 2:
             narg.pop(0)
+
             for param in narg:
                 if re.search(r'^.*?=.*?$', param):
                     param = param.split("=")
+
                     if re.search(r'^"(.*?)"$', param[1]):
                         param[1] = param[1].strip('"')
                         param[1] = param[1].replace("_", " ")
+
                         setattr(new_instance, param[0], str(param[1]))
                     else:
                         setattr(new_instance, param[0], eval(param[1]))
+
         new_instance.save()
         print(new_instance.id)
 
