@@ -5,19 +5,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import IntegrityError, OperationalError
 from os import getenv
-from models.amenity import Amenity
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.review import Review
-from models.base_model import Base
 
 
 class DBStorage:
     """An implementation of the Database Storage"""
     __engine = None
     __session = None
+
+    Session = None
 
     def __init__(self):
         """the class constructor for the database storage implementation"""
@@ -35,6 +30,12 @@ class DBStorage:
 
     def all(self, cls=None):
         """a public instance method that returns a dictionary"""
+        from models.amenity import Amenity
+        from models.user import User
+        from models.place import Place
+        from models.state import State, Base
+        from models.city import City, Base
+        from models.review import Review
 
         if cls is None:
             cls = [State, City, User, Place, Review, Amenity]
@@ -77,6 +78,13 @@ class DBStorage:
 
     def reload(self):
         """a public instance method that initializes"""
+        from models.user import User
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.state import State, Base
+        from models.city import City, Base
+        from models.review import Review
+
         Base.metadata.create_all(self.__engine)
 
         Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
