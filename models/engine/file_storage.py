@@ -18,21 +18,21 @@ class FileStorage:
         """
         if obj:
             id = obj.to_dict()["id"]
-            clsname = obj.to_dict()["__class__"]
-            kName = clsname+"."+id
-            if kName in FileStorage.__objects:
-                del (FileStorage.__objects[kName])
+            className = obj.to_dict()["__class__"]
+            keyName = className+"."+id
+            if keyName in FileStorage.__objects:
+                del (FileStorage.__objects[keyName])
                 self.save()
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        dict_p = {}
+        print_dict = {}
         if cls:
-            clsname = cls.__name__
-            for ky, v in FileStorage.__objects.items():
-                if ky.split('.')[0] == clsname:
-                    dict_p[ky] = str(v)
-            return dict_p
+            className = cls.__name__
+            for k, v in FileStorage.__objects.items():
+                if k.split('.')[0] == className:
+                    print_dict[k] = str(v)
+            return print_dict
         else:
             return FileStorage.__objects
 

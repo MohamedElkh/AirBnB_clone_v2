@@ -6,6 +6,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.exc import IntegrityError, OperationalError
 from os import getenv
 
+user = getenv('HBNB_MYSQL_USER')
+pwd = getenv('HBNB_MYSQL_PWD')
+host = getenv('HBNB_MYSQL_HOST')
+database = getenv('HBNB_MYSQL_DB')
+env = getenv('HBNB_ENV')
+
 
 class DBStorage:
     """An implementation of the Database Storage"""
@@ -16,12 +22,6 @@ class DBStorage:
 
     def __init__(self):
         """the class constructor for the database storage implementation"""
-        user = getenv('HBNB_MYSQL_USER')
-        pwd = getenv('HBNB_MYSQL_PWD')
-        host = getenv('HBNB_MYSQL_HOST')
-        database = getenv('HBNB_MYSQL_DB')
-        env = getenv('HBNB_ENV')
-
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
                 .format(user, pwd, host, database), pool_pre_ping=True)
         if env == 'test':
