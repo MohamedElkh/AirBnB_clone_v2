@@ -4,7 +4,6 @@ from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.city import City
 
 
 var_st = getenv("HBNB_TYPE_STORAGE")
@@ -21,11 +20,12 @@ class State(BaseModel):
 
         @property
         def cities(self):
-            from models import storage
-            objlist = []
-            strgx = storage.all(City)
-
-            for cty in strgx.values():
-                if cty.state_id == self.id:
-                    objlist.append(cty)
-            return objlist
+            """ func cities """
+            from models.__init__ import storage
+            from models.city import City
+            obj_list = []
+            strg = storage.all(City)
+            for value in strg:
+                if self.id == value.state_id:
+                    obj_list.append(value)
+            return obj_list

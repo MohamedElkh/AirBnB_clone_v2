@@ -2,8 +2,6 @@
 """ Place Module for HBNB project """
 from os import getenv
 from models.base_model import BaseModel, Base
-from models.amenity import Amenity
-from models.review import Review
 from sqlalchemy import Table, Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
@@ -26,18 +24,14 @@ class Place(BaseModel, Base):
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
-
         description = Column(String(1024))
         number_rooms = Column(Integer, nullable=False, default=0)
         number_bathrooms = Column(Integer, nullable=False, default=0)
-
         max_guest = Column(Integer, nullable=False, default=0)
         price_by_night = Column(Integer, nullable=False, default=0)
-
         latitude = Column(Float)
         longitude = Column(Float)
         reviews = relationship('Review', backref='place')
-
         amenities = relationship("Amenity", secondary=place_amenity,
                                   back_populates="place_amenities",
                                   viewonly=False)
@@ -56,31 +50,32 @@ class Place(BaseModel, Base):
 
         @property
         def reviews(self):
-            from models import storage
+            """ func review """
+            from models.__init__ import storage
+            from models.amenity import Review
             objlist = []
-            strgx = storage.all(Review)
-
-            for val in strgx.values():
-                if val.place_id in self.id:
-                    objlist.append(val)
+            strg = storage.all(Review)
+            for value in strg:
+                if self.id == value.id:
+                    objlist.append(value)
             return objlist
 
         @property
         def amenities(self):
             """ get am """
-            from models import storage
+            from models.__init__ import storage
+            from models.amenity import Amenity
             objlist = []
-            strgx = storage.all(Amenity)
-
-            for amenity in strgx.values():
-
-                if amenity.id in self.amenity_ids:
-                    objlist.append(amenity)
+            strg = storage.all(Amenity)
+            for value in strg:
+                if self.id == value.id:
+                    objlist.append(value)
             return objlist
 
         @amenities.setter
-        def amenities(self, Amenity):
+        def amenities(self, obj):
+            from models.__init__ import storage
+            from models.amenity import Amenity
             """ set the am """
-            if isinstance(amenity, Amenity):
-
-                self.amenity_ids.append(amenity.id)
+            if (isinstance(obj, storage.all(Amenity))):
+                self.amenity_ids.append(obj.id)
