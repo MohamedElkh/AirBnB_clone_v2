@@ -4,8 +4,9 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
+import os
 
-var_st = getenv("HBNB_TYPE_STORAGE")
+var_st = os.environ.get("HBNB_TYPE_STORAGE")
 
 
 class User(BaseModel, Base):
