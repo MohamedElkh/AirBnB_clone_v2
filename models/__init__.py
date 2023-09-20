@@ -3,10 +3,10 @@
 import os
 from os import getenv
 
-v_name = 'HBNB_TYPE_STORAGE'
+v_name = "HBNB_TYPE_STORAGE"
 var_st = os.environ.get(v_name)
 
-if var_st == 'db':
+if var_st == "db":
     from models.engine.db_storage import DBStorage
 
     storage = DBStorage()

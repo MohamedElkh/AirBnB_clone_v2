@@ -7,11 +7,13 @@ from sqlalchemy.exc import IntegrityError, OperationalError
 from os import getenv
 import os
 
-user = os.environ.get('HBNB_MYSQL_USER')
-pwd = os.environ.get('HBNB_MYSQL_PWD')
-host = os.environ.get('HBNB_MYSQL_HOST')
-database = os.environ.get('HBNB_MYSQL_DB')
-env = os.environ.get('HBNB_ENV')
+user = os.environ.get("HBNB_MYSQL_USER")
+pwd = os.environ.get("HBNB_MYSQL_PWD")
+
+host = os.environ.get("HBNB_MYSQL_HOST")
+database = os.environ.get("HBNB_MYSQL_DB")
+
+env = os.environ.get("HBNB_ENV")
 
 
 class DBStorage:
@@ -23,9 +25,11 @@ class DBStorage:
 
     def __init__(self):
         """the class constructor for the database storage implementation"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
-                .format(user, pwd, host, database), pool_pre_ping=True)
-        if env == 'test':
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".format(user, pwd, host, database),
+            pool_pre_ping=True)
+
+        if env == "test":
             metadata = MetaData()
             metadata.drop_all(self.__engine, checkfirst=False)
 
@@ -47,7 +51,7 @@ class DBStorage:
             query = self.__session.query(cls).all()
         cls_objs = {}
         for obj in query:
-            cls_objs[obj.to_dict()['__class__'] + '.' + obj.id] = obj
+            cls_objs[obj.to_dict()["__class__"] + "." + obj.id] = obj
         return cls_objs
 
     def new(self, obj):
@@ -88,5 +92,7 @@ class DBStorage:
 
         Base.metadata.create_all(self.__engine)
 
-        Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
+        Session = scoped_session(
+            sessionmaker(bind=self.__engine, expire_on_commit=False))
+
         self.__session = Session()
