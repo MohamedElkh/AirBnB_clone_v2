@@ -55,8 +55,8 @@ class Place(BaseModel, Base):
             from models.__init__ import storage
             from models.amenity import Review
             objlist = []
-            strg = storage.all(Review)
-            for value in strg:
+            strgx = storage.all(Review)
+            for value in strgx:
                 if self.id == value.id:
                     objlist.append(value)
             return objlist
@@ -67,8 +67,8 @@ class Place(BaseModel, Base):
             from models.__init__ import storage
             from models.amenity import Amenity
             objlist = []
-            strg = storage.all(Amenity)
-            for value in strg:
+            strgx = storage.all(Amenity)
+            for value in strgx:
                 if self.id == value.id:
                     objlist.append(value)
             return objlist
