@@ -30,7 +30,7 @@ class FileStorage:
         if cls:
             clsnm = cls.__name__
             for k, v in FileStorage.__objects.items():
-                if k.split('.')[0] == clsnm:
+                if k.split(".")[0] == clsnm:
                     print_d[k] = str(v)
 
             return print_d
@@ -39,11 +39,11 @@ class FileStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        self.all().update({obj.to_dict()["__class__"] + "." + obj.id: obj})
 
     def save(self):
         """Saves storage dictionary to file"""
-        with open(FileStorage.__file_path, 'w') as f:
+        with open(FileStorage.__file_path, "w") as f:
             temp = {}
             temp.update(FileStorage.__objects)
             for key, val in temp.items():

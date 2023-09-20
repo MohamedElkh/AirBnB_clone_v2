@@ -25,11 +25,8 @@ class State(BaseModel):
             from models.city import City
 
             objlist = []
-
             strgx = storage.all(City)
-
             for value in strgx:
                 if self.id == value.state_id:
                     objlist.append(value)
-
             return obj_list
