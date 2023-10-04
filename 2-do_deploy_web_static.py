@@ -3,6 +3,7 @@
 import os
 from fabric.api import env, local, put, run, runs_once
 from datetime import datetime
+from os.path import exists
 
 
 env.hosts = ['100.25.166.57', '54.173.193.255']
