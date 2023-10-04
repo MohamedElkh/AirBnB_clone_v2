@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 """filefabric to distribute archive"""
-from os import path
-from fabric.api import put
-from fabric.api import run
-from fabric.api import env
-from fabric.api import *
+import os
+from fabric.api import env, local, put, run, runs_once
 from datetime import datetime
 
 
@@ -12,32 +9,46 @@ env.hosts = ['100.25.166.57', '54.173.193.255']
 env.user = 'ubuntu'
 env.key_namefile = '~/.ssh/school'
 
+@runs_once
+def do_pack():
+    """create a func to achive the dict"""
+    dt = datetime.utcnow()
+
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
+                                                         dt.month,
+                                                         dt.day,
+                                                         dt.hour,
+                                                         dt.minute,
+                                                         dt.second)
+
+    if os.path.isdir("versions") is False:
+        if local("mkdir -p versions").failed is True:
+            return None
+
+    if local("tar -cvzf {} web_static".format(file)).failed is True:
+        return None
+    return file
+
 
 def do_deploy(archive_path):
-    """func to distribute archive web """
-    try:
-        if not (path.exists(archive_path)):
-            return False
-
-        put(archive_path, '/tmp/')
-
-        tim_p = archive_path[-18:-4]
-        run('sudo mkdir -p /data/web_static/\
-            releases/web_static_{}/'.format(tim_p))
-        run('sudo tar -xzf /tmp/web_static_{}.tgz -C \
-            /data/web_static/releases/web_static_{}/'.format(tim_p, tim_p))
-
-        run('sudo rm /tmp/web_static_{}.tgz'.format(tim_p))
-        run('sudo mv /data/web_static/releases/web_static_{}/web_static/* \
-            /data/web_static/releases/web_static_{}/'.format(tim_p, tim_p))
-
-        run('sudo rm -rf /data/web_static/releases/\
-             web_static_{}/web_static'.format(time_p))
-
-        run('sudo rm -rf /data/web_static/current')
-
-        run('sudo ln -s /data/web_static/releases/\
-             web_static_{}/ /data/web_static/current'.format(tim_p))
-    except Exception:
+    """func to distribute archive web"""
+    if not os.path.exists(archive_path):
         return False
-    return True
+    file_name = os.path.basename(archive_path)
+    folder_name = file_name.replace(".tgz", "")
+    folder_path = "/data/web_static/releases/{}/".format(folder_name)
+    success = False
+    try:
+        put(archive_path, "/tmp/{}".format(file_name))
+        run("mkdir -p {}".format(folder_path))
+        run("tar -xzf /tmp/{} -C {}".format(file_name, folder_path))
+        run("rm -rf /tmp/{}".format(file_name))
+        run("mv {}web_static/* {}".format(folder_path, folder_path))
+        run("rm -rf {}web_static".format(folder_path))
+        run("rm -rf /data/web_static/current")
+        run("ln -s {} /data/web_static/current".format(folder_path))
+        print('New version deployed!')
+        success = True
+    except Exception:
+        success = False
+    return success
