@@ -1,11 +1,13 @@
 #!/usr/bin/python3
-# filefabric to distribute archive
+"""filefabric to distribute archive"""
 import os.path
 from fabric.api import put
 from fabric.api import run
 from fabric.api import env
 
 env.hosts = ['100.25.166.57', '54.173.193.255']
+env.user = 'ubuntu'
+env.key_namefile = '~/.ssh/school'
 
 
 def do_deploy(archive_path):
