@@ -24,12 +24,14 @@ def c(text):
     text = text.replace("_", " ")
     return "C {}".format(text)
 
+
 @app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def python(text="is cool"):
     """func to display python and value text"""
     text = text.replace("_", " ")
     return "Python {}".format(text)
+
 
 @app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
