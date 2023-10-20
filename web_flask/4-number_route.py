@@ -7,19 +7,19 @@ app = Flask(__name__)
 
 
 @app.route("/", strict_slashes=False)
-def hello_hbnb():
+def func_hello_hbnb():
     """func to display Hello HBNB!"""
     return "Hello HBNB!"
 
 
 @app.route("/hbnb", strict_slashes=False)
-def hbnb():
+def func_hbnb():
     """func to display HBNB"""
     return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
-def c(text):
+def func_c(text):
     """func to display c with value text"""
     text = text.replace("_", " ")
     return "C {}".format(text)
@@ -27,14 +27,14 @@ def c(text):
 
 @app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
-def python(text="is cool"):
+def func_python(text="is cool"):
     """func to display python with value text"""
     text = text.replace("_", " ")
     return "Python {}".format(text)
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
-def number(n):
+def func_number(n):
     """func to display n is a number"""
     return "{} is a number".format(n)
 

@@ -8,14 +8,14 @@ app = Flask(__name__)
 
 
 @app.route("/states_list", strict_slashes=False)
-def states_list():
+def func_states_list():
     """func to display html page"""
     states = storage.all("State")
     return render_template("7-states_list.html", states=states)
 
 
 @app.teardown_appcontext
-def teardown(exc):
+def func_teardown(exc):
     """func to remove the current sql"""
     storage.close()
 
