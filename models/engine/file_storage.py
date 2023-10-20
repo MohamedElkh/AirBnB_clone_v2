@@ -39,7 +39,7 @@ class FileStorage:
             clsnm = cls.__name__
             for k, v in FileStorage.__objects.items():
                 if k.split(".")[0] == clsnm:
-                    print_d[k] = str(v)
+                    print_d[k] = v
 
             return print_d
         else:
